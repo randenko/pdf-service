@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title></title>
+<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Paper Street Software &copy;</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="row">
+      <form id="myForm">
+        <fieldset>
+          <fieldset class="form-group">
+            <legend>PDF Types</legend>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="pdfType" id="formTypeRadios1" value="STANDARD_PROMISSORY_NOTE" checked="">
+                Standard Promissory Note
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" name="pdfType" id="formTypeRadios2" value="TAX_FORM_1099">
+                1099 Tax Form
+              </label>
+            </div>
+          </fieldset>
+          <button id="generatePDF" type="submit" class="btn btn-primary">Generate PDF</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <script>
+    window.onload = function () {
+      let link = document.getElementById("myForm");
+      link.addEventListener("submit", generatePDF, false);
+    };
+
+    function generatePDF(e) {
+      e.preventDefault(); //stop form from submitting
+      const pdfType = document.querySelector('input[name="pdfType"]:checked').value;
+
+      fetch('http://localhost:5000/api/v1/generatePDF?pdfType=' + pdfType, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        return response.blob();
+      })
+      .then(blob => {
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.target = "_blank";
+        //link.download = 'promissory_note.pdf';
+        link.click();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+
+    const data = {
+      "lenderFirstName":"Randall",
+      "lenderLastName":"Kwiatkowski",
+      "lenderMailingAddressLine1":"440 Judita Dr.",
+      "lenderMailingAddressLine2":null,
+      "lenderMailingCity":"Brunswick",
+      "lenderMailingState":"Ohio",
+      "lenderMailingZip":"44212",
+      "borrowerFirstName":"Laura",
+      "borrowerLastName":"Ortega",
+      "borrowerMailingAddressLine1":"123 River Road.",
+      "borrowerMailingAddressLine2":null,
+      "borrowerMailingCity":"Toledo",
+      "borrowerMailingState":"Ohio",
+      "borrowerMailingZip":"43614",
+      "cosignerFirstName":"Mark",
+      "cosignerLastName":"Williams",
+      "loanType":"SECURED",
+      "loanTerm":12,
+      "loanAmount":10000.00,
+      "interestRate":5.00,
+      "lateFeeAmount":25.00,
+      "monthlyDueDay":15,
+      "securities":[
+        "iphone xr 64gb black",
+        "pixel 2 64gb black"
+      ],
+      "borrowDate":"05-01-2019",
+      "dueDate":"06-15-2020",
+      "stateSigned":"Ohio",
+      "lenderElectronicSignature":null,
+      "lenderSignatureBy":"Randall J Kwiatkowski",
+      "borrowerElectronicSignature":null,
+      "borrowerSignatureBy":"Laura J Ortega",
+      "cosignerElectronicSignature":null,
+      "cosignerSignatureBy":"Mark E Williams"
+    };
+  </script>
+</body>
+</html>
