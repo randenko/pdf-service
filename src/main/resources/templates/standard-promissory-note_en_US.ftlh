@@ -217,7 +217,7 @@
         Co-Signer shall be jointly and severally liable under this Note.
     </li>
     <li>
-        <span>Govering Law:</span>
+        <span>Governing Law:</span>
         This note shall be governed under the laws in the State of ${model.stateSigned}.
     </li>
 </ol>
