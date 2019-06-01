@@ -22,10 +22,16 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:4200")
 public class PDFController {
 
-    @Autowired private PDFGenerator pdfGenerator;
-    @Autowired private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
+    private PDFGenerator pdfGenerator;
+    private Validator validator;
 
-    @Autowired private Validator validator;
+    @Autowired
+    public PDFController(ObjectMapper objectMapper, PDFGenerator pdfGenerator, Validator validator) {
+        this.objectMapper = objectMapper;
+        this.pdfGenerator = pdfGenerator;
+        this.validator = validator;
+    }
 
     @PostMapping("/api/v1/generatePDF")
     @ResponseBody

@@ -49,13 +49,23 @@ public class AppConfig implements WebMvcConfigurer {
     public static final String ASCII2_REGEX = "^[\\x20-\\x7E]+$";
     public static final String ZIP_REGEX = "^\\d{5}(?:[-\\s]\\d{4})?$";
 
-    @Autowired private HTTPTemplateLoader httpTemplateLoader;
-    @Autowired private ResourceLoader resourceLoader;
-    @Autowired private TemplateNumberFormatFactory ordinalTemplateNumberFormatFactory;
-    @Autowired private TemplateDateFormatFactory ordinalTemplateDateFormatFactory;
+    private HTTPTemplateLoader httpTemplateLoader;
+    private ResourceLoader resourceLoader;
+    private TemplateDateFormatFactory templateDateFormatFactory;
+    private TemplateNumberFormatFactory templateNumberFormatFactory;
 
     @Value("${pdf.template.path}")
     private String templatePath;
+
+    @Autowired
+    public AppConfig(HTTPTemplateLoader httpTemplateLoader, ResourceLoader resourceLoader,
+                     TemplateDateFormatFactory templateDateFormatFactory,
+                     TemplateNumberFormatFactory templateNumberFormatFactory) {
+        this.httpTemplateLoader = httpTemplateLoader;
+        this.resourceLoader = resourceLoader;
+        this.templateDateFormatFactory = templateDateFormatFactory;
+        this.templateNumberFormatFactory = templateNumberFormatFactory;
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -92,7 +102,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Scope(SCOPE_SINGLETON)
     public Map<String, TemplateNumberFormatFactory> customNumberFormats() {
         Map<String, TemplateNumberFormatFactory> customNumberFormats = new HashMap<>();
-        customNumberFormats.put("ordinal", ordinalTemplateNumberFormatFactory);
+        customNumberFormats.put("ordinal", templateNumberFormatFactory);
         return customNumberFormats;
     }
 
@@ -100,7 +110,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Scope(SCOPE_SINGLETON)
     public Map<String, TemplateDateFormatFactory> customDateFormats() {
         Map<String, TemplateDateFormatFactory> customDateFormats = new HashMap<>();
-        customDateFormats.put("ordinalDate", ordinalTemplateDateFormatFactory);
+        customDateFormats.put("ordinalDate", templateDateFormatFactory);
         return customDateFormats;
     }
 

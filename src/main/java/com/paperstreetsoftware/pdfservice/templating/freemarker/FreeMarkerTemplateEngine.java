@@ -20,8 +20,12 @@ import java.util.Map;
 @Component("freeMarkerTemplateEngine")
 public class FreeMarkerTemplateEngine implements TemplateEngine {
 
-    @Autowired
     private Configuration freeMarkerConfiguration;
+
+    @Autowired
+    public FreeMarkerTemplateEngine(Configuration freeMarkerConfiguration) {
+        this.freeMarkerConfiguration = freeMarkerConfiguration;
+    }
 
     @Override
     public org.w3c.dom.Document processTemplate(String templateName, Map<String, Object> templateData) {

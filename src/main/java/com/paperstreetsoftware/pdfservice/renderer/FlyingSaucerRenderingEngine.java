@@ -17,14 +17,20 @@ import java.net.URL;
 @Component("flyingSaucerRenderingEngine")
 public class FlyingSaucerRenderingEngine implements RenderingEngine {
 
-    @Autowired private ObjectFactory<ITextRenderer> rendererFactory;
-    @Autowired private ResourceLoader resourceLoader;
+    private ObjectFactory<ITextRenderer> rendererFactory;
+    private ResourceLoader resourceLoader;
 
     @Value("${pdf.template.endpoint}")
     private String pdfTemplateEndpoint;
 
     @Value("${pdf.resource.path}")
     private String resourcePath;
+
+    @Autowired
+    public FlyingSaucerRenderingEngine(ObjectFactory<ITextRenderer> rendererFactory, ResourceLoader resourceLoader) {
+        this.rendererFactory = rendererFactory;
+        this.resourceLoader = resourceLoader;
+    }
 
     @Override
     public byte[] renderPDF(Document doc) {
