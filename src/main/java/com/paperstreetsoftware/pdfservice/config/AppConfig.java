@@ -1,4 +1,4 @@
-package com.paperstreetsoftware.pdfservice;
+package com.paperstreetsoftware.pdfservice.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -16,7 +16,10 @@ import freemarker.core.TemplateNumberFormatFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -34,13 +37,9 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SINGLETON;
 
 @Configuration
-@ComponentScan(
-        basePackageClasses = {AppConfig.class},
-        basePackages = "com.paperstreetsoftware.pdfservice"
-)
 @PropertySource(
-        value = {"classpath:default.pdf.properties"},
-        ignoreResourceNotFound = true
+    value = {"classpath:default.pdf.properties"},
+    ignoreResourceNotFound = true
 )
 public class AppConfig implements WebMvcConfigurer {
 

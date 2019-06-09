@@ -1,7 +1,7 @@
-package com.paperstreetsoftware.pdfservice;
+package com.paperstreetsoftware.pdfservice.model;
 
-import com.paperstreetsoftware.pdfservice.model.StandardPromissoryNoteBean;
-import com.paperstreetsoftware.pdfservice.model.TaxForm1099Bean;
+import com.paperstreetsoftware.pdfservice.domain.StandardPromissoryNoteBean;
+import com.paperstreetsoftware.pdfservice.domain.TaxForm1099Bean;
 
 public enum PDFType {
 

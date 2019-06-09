@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-import static com.paperstreetsoftware.pdfservice.AppConfig.DATE_TIME_FORMAT;
+import static com.paperstreetsoftware.pdfservice.config.AppConfig.DATE_TIME_FORMAT;
 
 public class ErrorDetailResponse {
 

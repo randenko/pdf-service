@@ -1,0 +1,17 @@
+server:
+  port: 0
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+
+security:
+  jwt:
+    public-key: classpath:jwt_public_key.txt
+
+spring:
+  application:
+    name: pdf-service

@@ -1,6 +1,6 @@
 package com.paperstreetsoftware.pdfservice.service;
 
-import com.paperstreetsoftware.pdfservice.PDFRequest;
+import com.paperstreetsoftware.pdfservice.model.PDFRequest;
 
 public interface PDFGenerator {
 

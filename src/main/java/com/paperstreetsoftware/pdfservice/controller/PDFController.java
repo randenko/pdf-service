@@ -1,8 +1,8 @@
 package com.paperstreetsoftware.pdfservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paperstreetsoftware.pdfservice.PDFRequest;
-import com.paperstreetsoftware.pdfservice.PDFType;
+import com.paperstreetsoftware.pdfservice.model.PDFRequest;
+import com.paperstreetsoftware.pdfservice.model.PDFType;
 import com.paperstreetsoftware.pdfservice.service.PDFGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class PDFController {
 
     private ObjectMapper objectMapper;
