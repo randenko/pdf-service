@@ -1,8 +1,8 @@
 package com.paperstreetsoftware.pdfservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paperstreetsoftware.pdfservice.PDFRequest;
-import com.paperstreetsoftware.pdfservice.PDFType;
+import com.paperstreetsoftware.pdfservice.model.PDFRequest;
+import com.paperstreetsoftware.pdfservice.model.PDFType;
 import com.paperstreetsoftware.pdfservice.service.PDFGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +19,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class PDFController {
 
-    private ObjectMapper objectMapper;
-    private PDFGenerator pdfGenerator;
-    private Validator validator;
+    private final ObjectMapper objectMapper;
+    private final PDFGenerator pdfGenerator;
+    private final Validator validator;
 
     @Autowired
     public PDFController(ObjectMapper objectMapper, PDFGenerator pdfGenerator, Validator validator) {
@@ -34,7 +33,6 @@ public class PDFController {
     }
 
     @PostMapping("/api/v1/generatePDF")
-    @ResponseBody
     public ResponseEntity<byte[]> generatePDF(@RequestParam PDFType pdfType, @RequestBody Map<String, Object> data) {
         Object model = objectMapper.convertValue(data, pdfType.getBeanType());
 
@@ -48,16 +46,16 @@ public class PDFController {
                 .addTemplateData("model", model)
                 .build());
 
-        return new ResponseEntity<>(pdf, buildHttpHeaders(pdfType), HttpStatus.OK);
+        return new ResponseEntity<>(pdf, buildHttpHeaders(), HttpStatus.OK);
     }
 
-    private HttpHeaders buildHttpHeaders(PDFType pdfType) {
+    private HttpHeaders buildHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.add("Access-Control-Allow-Origin", "*");
         headers.add("Access-Control-Allow-Methods", "POST");
         headers.add("Access-Control-Allow-Headers", "Content-Type");
-        headers.add("Content-Disposition", "filename=" + pdfType.name().toLowerCase() + "-" + UUID.randomUUID() + ".pdf");
+        headers.add("Content-Disposition", "filename=" + UUID.randomUUID() + ".pdf");
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");

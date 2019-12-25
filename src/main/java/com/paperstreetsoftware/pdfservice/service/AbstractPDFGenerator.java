@@ -1,6 +1,6 @@
 package com.paperstreetsoftware.pdfservice.service;
 
-import com.paperstreetsoftware.pdfservice.PDFRequest;
+import com.paperstreetsoftware.pdfservice.model.PDFRequest;
 import com.paperstreetsoftware.pdfservice.renderer.RenderingEngine;
 import com.paperstreetsoftware.pdfservice.templating.TemplateEngine;
 import org.w3c.dom.Document;

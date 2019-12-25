@@ -1,4 +1,4 @@
-package com.paperstreetsoftware.pdfservice;
+package com.paperstreetsoftware.pdfservice.model;
 
 import java.io.Serializable;
 import java.util.HashMap;

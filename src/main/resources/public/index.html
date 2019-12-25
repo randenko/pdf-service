@@ -21,7 +21,7 @@
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" />
         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
@@ -56,14 +56,21 @@
       link.addEventListener("submit", generatePDF, false);
     };
 
+    function uuidv4() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+
     function generatePDF(e) {
       e.preventDefault(); //stop form from submitting
       const pdfType = document.querySelector('input[name="pdfType"]:checked').value;
 
-      fetch('http://localhost:5000/api/v1/generatePDF?pdfType=' + pdfType, {
+      fetch('api/v1/generatePDF?pdfType=' + pdfType, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
+          'jwt-token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6Imp3dCJ9.eyJzdWIiOiJyYW5kZW5rbyIsImV4cCI6MTU3NzMzMDY1OCwiaXNzIjoiY29tLnBhcGVyc3RyZWV0c29mdHdhcmUuYXV0aCIsImdyb3VwcyI6WyJ1c2VyIiwiYWRtaW4iXX0.wwPIjz0iWTz5VMwOoxFQ76BGQr76yrNnRxtp3e0BniAD7YhjVAET6Y-i13rZhMzSCKQPReeNCPZlPMp00Q_bLcRVZjI31X8k3R4HAldhOgQU54Xruu2EVMMzrpXzmmH8a6jG1bDmKMoBy-eR3DNeu6kfZtN-w_fKhF91QlhzL74q2nPPp_TOksK6guLmLDnBnbL_AC2268stdURs0tB74kyKax0C_oaKR_QVMU8ygtFohGBu2kiXs_yn5geGWXFcvgyQQX_OZgrlol_TDU9dEBgrQ_BzRQ_zHrjBXQPrIIs7j82a2jyHNN3tNAbPWTcPpTedzwhekQmMeezY38yqKg'
         },
         body: JSON.stringify(data)
       })
@@ -73,8 +80,7 @@
       .then(blob => {
         let link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.target = "_blank";
-        //link.download = 'promissory_note.pdf';
+        link.download = uuidv4() + '.pdf';
         link.click();
       })
       .catch(error => {

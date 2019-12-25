@@ -1,0 +1,20 @@
+server:
+  port: 0
+
+security:
+  jwt:
+    header-name: jwt-token
+    public-key: classpath:jwt_public_key.der
+
+pdf:
+  template-path: /templates
+  resource-path: ${pdf.template-path}/resources
+
+spring:
+  application:
+    name: pdf-service
+
+logging:
+  level:
+    web:
+      DEBUG

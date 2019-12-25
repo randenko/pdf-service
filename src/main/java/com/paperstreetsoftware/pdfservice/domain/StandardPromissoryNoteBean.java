@@ -1,4 +1,4 @@
-package com.paperstreetsoftware.pdfservice.model;
+package com.paperstreetsoftware.pdfservice.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.paperstreetsoftware.pdfservice.AppConfig.*;
+import static com.paperstreetsoftware.pdfservice.config.AppConfig.*;
 
 public class StandardPromissoryNoteBean implements Serializable {
     private static final long serialVersionUID = -641373217323877663L;

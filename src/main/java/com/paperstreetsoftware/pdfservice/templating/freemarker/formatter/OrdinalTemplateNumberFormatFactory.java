@@ -11,7 +11,7 @@ import java.util.Locale;
 public class OrdinalTemplateNumberFormatFactory extends TemplateNumberFormatFactory {
 
     public static final String[] PAYMENT_DAY_NAMES = {
-            "", "First", "Second", "Third", "Forth", "Fifth", "Sixth", "Seventh", "Eighth", "Nineth",
+            "", "First", "Second", "Third", "Forth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth",
             "Tenth", "Eleventh", "Twelfth", "Thirteenth", "Fourteenth", "Fifteenth", "Sixteenth", "Seventeenth", "Eighteenth", "Nineteenth",
             "Twentieth", "Twenty First", "Twenty Second", "Twenty Third", "Twenty Forth", "Twenty Fifth", "Twenty Sixth", "Twenty Seventh", "Twenty Eighth", "Twenty Ninth",
             "Thirtieth", "Thirty First"};

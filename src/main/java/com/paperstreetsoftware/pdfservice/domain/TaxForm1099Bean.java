@@ -1,4 +1,4 @@
-package com.paperstreetsoftware.pdfservice.model;
+package com.paperstreetsoftware.pdfservice.domain;
 
 import java.io.Serializable;
 
