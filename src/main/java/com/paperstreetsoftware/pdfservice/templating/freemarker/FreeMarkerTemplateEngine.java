@@ -20,7 +20,7 @@ import java.util.Map;
 @Component("freeMarkerTemplateEngine")
 public class FreeMarkerTemplateEngine implements TemplateEngine {
 
-    private Configuration freeMarkerConfiguration;
+    private final Configuration freeMarkerConfiguration;
 
     @Autowired
     public FreeMarkerTemplateEngine(Configuration freeMarkerConfiguration) {

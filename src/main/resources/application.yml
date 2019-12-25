@@ -1,17 +1,20 @@
 server:
   port: 0
 
-eureka:
-  instance:
-    preferIpAddress: false
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-
 security:
   jwt:
-    public-key: classpath:jwt_public_key.txt
+    header-name: jwt-token
+    public-key: classpath:jwt_public_key.der
+
+pdf:
+  template-path: /templates
+  resource-path: ${pdf.template-path}/resources
 
 spring:
   application:
     name: pdf-service
+
+logging:
+  level:
+    web:
+      DEBUG
