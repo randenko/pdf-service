@@ -62,30 +62,32 @@
         );
     }
 
-    function generatePDF(e) {
+    async function generatePDF(e) {
       e.preventDefault(); //stop form from submitting
       const pdfType = document.querySelector('input[name="pdfType"]:checked').value;
 
-      fetch('api/v1/generatePDF?pdfType=' + pdfType, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'jwt-token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6Imp3dCJ9.eyJzdWIiOiJyYW5kZW5rbyIsImV4cCI6MTU3NzMzMDY1OCwiaXNzIjoiY29tLnBhcGVyc3RyZWV0c29mdHdhcmUuYXV0aCIsImdyb3VwcyI6WyJ1c2VyIiwiYWRtaW4iXX0.wwPIjz0iWTz5VMwOoxFQ76BGQr76yrNnRxtp3e0BniAD7YhjVAET6Y-i13rZhMzSCKQPReeNCPZlPMp00Q_bLcRVZjI31X8k3R4HAldhOgQU54Xruu2EVMMzrpXzmmH8a6jG1bDmKMoBy-eR3DNeu6kfZtN-w_fKhF91QlhzL74q2nPPp_TOksK6guLmLDnBnbL_AC2268stdURs0tB74kyKax0C_oaKR_QVMU8ygtFohGBu2kiXs_yn5geGWXFcvgyQQX_OZgrlol_TDU9dEBgrQ_BzRQ_zHrjBXQPrIIs7j82a2jyHNN3tNAbPWTcPpTedzwhekQmMeezY38yqKg'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        return response.blob();
-      })
-      .then(blob => {
-        let link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = uuidv4() + '.pdf';
-        link.click();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      try {
+          const response = await fetch('api/v1/generatePDF?pdfType=' + pdfType, {
+              method: 'post',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'jwt-token': 'eyJhbGciOiJSUzI1NiIsInR5cCI6Imp3dCJ9.eyJzdWIiOiJyYW5kZW5rbyIsImV4cCI6MTU3NzM0MDAwMCwiaXNzIjoiY29tLnBhcGVyc3RyZWV0c29mdHdhcmUuYXV0aCIsImdyb3VwcyI6WyJ1c2VyIiwiYWRtaW4iXX0.O_H_yaFDijtVtmRkUXGbvo3PTPDYts9_3nV6em1pplyNUtDgKj1_akzXodtvIS9Y0MTHT2aQNgD9gNz7jjqiZgSo5yIZbpc5O-V_4dQo_ToZuMotJvtrQ0L-Ka6nJCrVzBR9C8fBA0cj3x8YxJKuxG0iHFjaeZaGLlBr7Qhui4Hbx0laTNv2BksGWNyseJ22OYGSy7kXEzFOs1i8kaOY9ueaffkOX4wHLslQYtqNYkRl2wh8YC7R-bPbQgwADHCnA4jFZwPbLxm-qj-Q2rRq8lW_ml9DvWtZ383iWCCAWh8UfwAsvBdkBTmjhirRwqMB6hhc9PqbrdYoS6ocTNSypQ'
+              },
+              body: JSON.stringify(data)
+          });
+          if (response.ok) {
+              const blob = await response.blob();
+              let link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = uuidv4() + '.pdf';
+              link.click();
+          } else {
+              const json = await response.json();
+              alert(JSON.stringify(json));
+          }
+      } catch (error) {
+          console.log('There has been a problem with your fetch operation: ', error.message);
+      }
     }
 
     const data = {

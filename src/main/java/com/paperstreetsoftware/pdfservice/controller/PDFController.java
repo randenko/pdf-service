@@ -16,7 +16,6 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 @RestController
 public class PDFController {
@@ -55,7 +54,6 @@ public class PDFController {
         headers.add("Access-Control-Allow-Origin", "*");
         headers.add("Access-Control-Allow-Methods", "POST");
         headers.add("Access-Control-Allow-Headers", "Content-Type");
-        headers.add("Content-Disposition", "filename=" + UUID.randomUUID() + ".pdf");
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");

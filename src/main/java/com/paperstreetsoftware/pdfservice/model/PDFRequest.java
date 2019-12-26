@@ -36,7 +36,7 @@ public class PDFRequest implements Serializable {
 
         public PDFRequest build() {
             if (pdfRequest.templateFileName == null) {
-                throw new RuntimeException("An error occurred while building a PDFRequest object: templateName must be set.");
+                throw new IllegalArgumentException("An error occurred while building a PDFRequest object: templateName must be set.");
             }
             return pdfRequest;
         }
