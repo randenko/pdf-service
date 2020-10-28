@@ -3,7 +3,6 @@ server:
 
 security:
   jwt:
-    header-name: jwt-token
     public-key: classpath:jwt_public_key.der
 
 pdf:
