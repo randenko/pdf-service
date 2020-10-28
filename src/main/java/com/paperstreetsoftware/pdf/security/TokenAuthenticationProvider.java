@@ -1,12 +1,10 @@
 package com.paperstreetsoftware.pdf.security;
 
-import com.paperstreetsoftware.pdf.config.props.SecurityProperties;
-import com.paperstreetsoftware.pdf.security.exception.JwtAuthenticationException;
+import com.paperstreetsoftware.pdf.security.exception.TokenAuthenticationException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,36 +14,19 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 
 @Component
-public class JwtTokenAuthenticationProvider implements AuthenticationProvider {
+public class TokenAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenAuthenticationProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthenticationProvider.class);
 
-
-    private final SecurityProperties securityProperties;
-    private PublicKey publicKey;
+    private final PublicKey publicKey;
 
     @Autowired
-    public JwtTokenAuthenticationProvider(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
-    }
-
-    @PostConstruct
-    public void init() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
-        try (InputStream publicKeyStream = securityProperties.getPublicKey()) {
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            publicKey = kf.generatePublic(new X509EncodedKeySpec(IOUtils.toByteArray(publicKeyStream)));
-        }
+    public TokenAuthenticationProvider(final PublicKey publicKey) {
+        this.publicKey = publicKey;
     }
 
     @Override
@@ -60,7 +41,7 @@ public class JwtTokenAuthenticationProvider implements AuthenticationProvider {
             String username = String.valueOf(jws.getBody().get("sub"));
             return new PreAuthenticatedAuthenticationToken(username, "{redacted}", new ArrayList<>());
         } catch (Throwable t) {
-            throw new JwtAuthenticationException("An error occurred while validating the jtw token.", t);
+            throw new TokenAuthenticationException("An error occurred while validating the jtw token.", t);
         }
     }
 

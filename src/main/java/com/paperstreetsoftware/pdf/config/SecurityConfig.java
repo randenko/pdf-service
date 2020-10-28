@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.paperstreetsoftware.pdf.security.JwtAuthenticationFilter;
-import com.paperstreetsoftware.pdf.security.JwtTokenAuthenticationProvider;
+import com.paperstreetsoftware.pdf.security.TokenAuthenticationFilter;
+import com.paperstreetsoftware.pdf.security.TokenAuthenticationProvider;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,18 +20,18 @@ import javax.servlet.http.HttpServletResponse;
 @Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtTokenAuthenticationProvider jwtTokenAuthenticationProvider;
+    private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final TokenAuthenticationProvider tokenAuthenticationProvider;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, JwtTokenAuthenticationProvider jwtTokenAuthenticationProvider) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.jwtTokenAuthenticationProvider = jwtTokenAuthenticationProvider;
+    public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter, TokenAuthenticationProvider tokenAuthenticationProvider) {
+        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
+        this.tokenAuthenticationProvider = tokenAuthenticationProvider;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
-        authenticationManagerBuilder.authenticationProvider(jwtTokenAuthenticationProvider);
+        authenticationManagerBuilder.authenticationProvider(tokenAuthenticationProvider);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
+                    .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
                 .authorizeRequests()
                     .anyRequest()
                         .authenticated()

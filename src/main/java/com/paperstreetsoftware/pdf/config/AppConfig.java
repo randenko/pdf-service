@@ -8,9 +8,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.paperstreetsoftware.pdf.config.props.PdfProperties;
+import com.paperstreetsoftware.pdf.config.props.SecurityProperties;
 
 import freemarker.core.TemplateDateFormatFactory;
 import freemarker.core.TemplateNumberFormatFactory;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.*;
 import org.springframework.core.io.ResourceLoader;
@@ -18,7 +21,14 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +51,16 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index.html");
+    }
+
+    @Bean
+    @Scope(SCOPE_SINGLETON)
+    public PublicKey publicKey(SecurityProperties securityProperties) throws NoSuchAlgorithmException,
+            InvalidKeySpecException, IOException {
+        try (InputStream inputStream = securityProperties.getPublicKey()) {
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            return kf.generatePublic(new X509EncodedKeySpec(IOUtils.toByteArray(inputStream)));
+        }
     }
 
     @Bean

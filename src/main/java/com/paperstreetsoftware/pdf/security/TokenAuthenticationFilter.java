@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class TokenAuthenticationFilter extends GenericFilterBean {
 
     private final SecurityProperties securityProperties;
 
     @Autowired
-    public JwtAuthenticationFilter(SecurityProperties securityProperties) {
+    public TokenAuthenticationFilter(SecurityProperties securityProperties) {
         this.securityProperties = securityProperties;
     }
 
