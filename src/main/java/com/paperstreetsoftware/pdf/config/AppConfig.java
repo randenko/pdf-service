@@ -31,9 +31,6 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_SING
 
 @Configuration
 @Import({ SecurityConfig.class })
-@ComponentScan(
-    basePackages = "com.paperstreetsoftware.pdfservice"
-)
 public class AppConfig implements WebMvcConfigurer {
 
     public static final String DATE_FORMAT = "MM-dd-yyyy";
