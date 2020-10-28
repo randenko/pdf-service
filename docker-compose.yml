@@ -1,7 +1,10 @@
 version: "3.8"
 services:
   pdf-services:
-    image: com.paperstreetsoftware/pdf-service-0.0.1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: com.paperstreetsoftware/pdf-service-0.0.1:latest
     restart: always
     ports:
       - "5000:5000"
