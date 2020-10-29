@@ -4,6 +4,8 @@ import com.paperstreetsoftware.pdf.model.PDFRequest;
 import com.paperstreetsoftware.pdf.renderer.RenderingEngine;
 import com.paperstreetsoftware.pdf.templating.TemplateEngine;
 
+import java.io.InputStream;
+
 import org.w3c.dom.Document;
 
 public abstract class AbstractPDFGenerator implements PDFGenerator {
@@ -26,7 +28,7 @@ public abstract class AbstractPDFGenerator implements PDFGenerator {
     abstract void setRenderingEngine(RenderingEngine renderingEngine);
 
     @Override
-    public byte[] createDocument(PDFRequest pdfRequest) {
+    public InputStream createDocument(PDFRequest pdfRequest) {
         Document doc = templateEngine.processTemplate(pdfRequest.getTemplateFileName(), pdfRequest.getTemplateData());
         return renderingEngine.renderPDF(doc);
     }

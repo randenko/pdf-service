@@ -58,8 +58,8 @@ public class AppConfig implements WebMvcConfigurer {
     public PublicKey publicKey(SecurityProperties securityProperties) throws NoSuchAlgorithmException,
             InvalidKeySpecException, IOException {
         try (InputStream inputStream = securityProperties.getPublicKey()) {
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            return kf.generatePublic(new X509EncodedKeySpec(IOUtils.toByteArray(inputStream)));
+            byte[] key = IOUtils.toByteArray(inputStream);
+            return KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(key));
         }
     }
 
