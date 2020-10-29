@@ -9,4 +9,4 @@ ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java", "-XX:MaxRAM=2048M", "-XshowSettings:vm", "-cp", "app:app/lib/*", "com.paperstreetsoftware.pdf.App"]
+ENTRYPOINT ["java", "-XX:MaxRAM=512M", "-XshowSettings:vm", "-cp", "app:app/lib/*", "com.paperstreetsoftware.pdf.App"]
