@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.net.URL;
 
 @Component("flyingSaucerRenderingEngine")
@@ -24,25 +26,39 @@ public class FlyingSaucerRenderingEngine implements RenderingEngine {
 
     @Autowired
     public FlyingSaucerRenderingEngine(ObjectFactory<ITextRenderer> rendererFactory, ResourceLoader resourceLoader,
-                                       PdfProperties pdfProperties) {
+            PdfProperties pdfProperties) {
         this.rendererFactory = rendererFactory;
         this.resourceLoader = resourceLoader;
         this.pdfProperties = pdfProperties;
     }
 
     @Override
-    public byte[] renderPDF(Document doc) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
+    public InputStream renderPDF(Document doc) {
         try {
-            ITextRenderer renderer = rendererFactory.getObject();
-            renderer.setDocument(doc, getBaseURLForResources());
-            renderer.layout();
-            renderer.createPDF(byteArrayOutputStream);
-        } catch (IOException | DocumentException e) {
+            ITextRenderer renderer = configureRenderer(doc);
+            return pipeToInputStream(renderer);
+        } catch (IOException e) {
             throw new RuntimeException("An error occurred while rendering the pdf file.", e);
         }
-        return byteArrayOutputStream.toByteArray();
+    }
+
+    private ITextRenderer configureRenderer(Document doc) throws IOException {
+        ITextRenderer renderer = rendererFactory.getObject();
+        renderer.setDocument(doc, getBaseURLForResources());
+        renderer.layout();
+        return renderer;
+    }
+
+    private InputStream pipeToInputStream(ITextRenderer renderer) {
+        PipedInputStream in = new PipedInputStream();
+        new Thread(() -> {
+            try (final PipedOutputStream out = new PipedOutputStream(in)) {
+                renderer.createPDF(out);
+            } catch (DocumentException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+        return in;
     }
 
     private String getBaseURLForResources() throws IOException {

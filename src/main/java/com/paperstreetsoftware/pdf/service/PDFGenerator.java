@@ -1,5 +1,7 @@
 package com.paperstreetsoftware.pdf.service;
 
+import java.io.InputStream;
+
 import com.paperstreetsoftware.pdf.model.PDFRequest;
 
 public interface PDFGenerator {
@@ -10,6 +12,6 @@ public interface PDFGenerator {
      * @param pdfRequest the request to be processed.
      * @return a byte array representation of a PDF.
      */
-    byte[] createDocument(PDFRequest pdfRequest);
+    InputStream createDocument(PDFRequest pdfRequest);
 
 }

@@ -6,6 +6,7 @@ import com.paperstreetsoftware.pdf.model.PDFType;
 import com.paperstreetsoftware.pdf.service.PDFGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
+
+import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +36,7 @@ public class PDFController {
     }
 
     @PostMapping("/api/v1/generatePDF")
-    public ResponseEntity<byte[]> generatePDF(@RequestParam PDFType pdfType, @RequestBody Map<String, Object> data) {
+    public ResponseEntity<InputStreamResource> generatePDF(@RequestParam PDFType pdfType, @RequestBody Map<String, Object> data) {
         Object model = objectMapper.convertValue(data, pdfType.getBeanType());
 
         Set<ConstraintViolation<Object>> constrains = validator.validate(model);
@@ -41,12 +44,13 @@ public class PDFController {
             throw new ConstraintViolationException(String.format("Error occurred while validating the payload for PDF - %s.", pdfType), constrains);
         }
 
-        byte[] pdf = pdfGenerator.createDocument(new PDFRequest.Builder()
+        InputStream pdf = pdfGenerator.createDocument(new PDFRequest.Builder()
                 .setTemplateFileName(pdfType.getFileName())
                 .addTemplateData("model", model)
                 .build());
 
-        return new ResponseEntity<>(pdf, buildHttpHeaders(), HttpStatus.OK);
+        InputStreamResource inputStreamResource = new InputStreamResource(pdf);
+        return new ResponseEntity<>(inputStreamResource, buildHttpHeaders(), HttpStatus.OK);
     }
 
     private HttpHeaders buildHttpHeaders() {
