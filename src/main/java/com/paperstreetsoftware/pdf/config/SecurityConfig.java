@@ -1,6 +1,7 @@
 package com.paperstreetsoftware.pdf.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,9 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.paperstreetsoftware.pdf.security.TokenAuthenticationFilter;
@@ -19,21 +20,17 @@ import com.paperstreetsoftware.pdf.security.TokenAuthenticationProvider;
 
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
-import javax.servlet.http.HttpServletResponse;
-
 @Configuration
 @EnableWebSecurity
 @Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final TokenAuthenticationFilter tokenAuthenticationFilter;
     private final TokenAuthenticationProvider tokenAuthenticationProvider;
-    
+
     private static final RequestMatcher PROTECTED_URLS = new AntPathRequestMatcher("/api/**");
 
     @Autowired
-    public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter, TokenAuthenticationProvider tokenAuthenticationProvider) {
-        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
+    public SecurityConfig(TokenAuthenticationProvider tokenAuthenticationProvider) {
         this.tokenAuthenticationProvider = tokenAuthenticationProvider;
     }
 
@@ -56,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
             .anonymous()
                 .disable()
-            .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
+            .addFilterBefore(tokenAuthenticationFilter(), AnonymousAuthenticationFilter.class)
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
@@ -67,4 +64,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint((request, response, exception) -> response.sendError(SC_UNAUTHORIZED));
         // @formatter:on
     }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() throws Exception {
+        final TokenAuthenticationFilter filter = new TokenAuthenticationFilter(PROTECTED_URLS);
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setAuthenticationSuccessHandler(successHandler());
+        filter.setAuthenticationFailureHandler(failureHandler());
+        return filter;
+    }
+
+    @Bean
+    public SimpleUrlAuthenticationSuccessHandler successHandler() {
+        final SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
+        successHandler.setRedirectStrategy((request, response, url) -> {});
+        return successHandler;
+    }
+
+    @Bean
+    public SimpleUrlAuthenticationFailureHandler failureHandler() {
+        final SimpleUrlAuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
+        failureHandler.setRedirectStrategy((request, response, url) -> {});
+        return failureHandler;
+    }
+
 }
