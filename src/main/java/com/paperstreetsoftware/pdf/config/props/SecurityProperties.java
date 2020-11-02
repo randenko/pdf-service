@@ -7,7 +7,16 @@ import java.io.InputStream;
 @ConfigurationProperties("security.jwt")
 public class SecurityProperties {
 
+    private String issuer;
     private InputStream publicKey;
+    
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public void setIssuer(String issuer) {
+        this.issuer = issuer;
+    }
 
     public InputStream getPublicKey() {
         return publicKey;

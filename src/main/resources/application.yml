@@ -5,6 +5,7 @@ server:
 
 security:
   jwt:
+    issuer: com.paperstreetsoftware.auth
     public-key: classpath:jwt_public_key.der
 
 pdf:

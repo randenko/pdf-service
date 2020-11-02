@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 
+import com.paperstreetsoftware.pdf.config.props.SecurityProperties;
 import com.paperstreetsoftware.pdf.security.exception.TokenAuthenticationException;
 
 import io.jsonwebtoken.Claims;
@@ -33,10 +34,12 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthenticationProvider.class);
 
     private final PublicKey publicKey;
+    private final SecurityProperties securityProperties;
 
     @Autowired
-    public TokenAuthenticationProvider(final PublicKey publicKey) {
+    public TokenAuthenticationProvider(final PublicKey publicKey, final SecurityProperties securityProperties) {
         this.publicKey = publicKey;
+        this.securityProperties = securityProperties;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
         try {
             Jws<Claims> jws = Jwts.parser()
                     .setSigningKey(publicKey)
-                    .requireIssuer("com.paperstreetsoftware.auth")
+                    .requireIssuer(securityProperties.getIssuer())
                     .parseClaimsJws(token);
             LOGGER.info(String.format("Jwt token valid. Header=%s, Claims=%s", jws.getHeader(), jws.getBody()));
             UserDetails userDetails = buildPrincipal(jws);
@@ -58,10 +61,10 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
     private UserDetails buildPrincipal(Jws<Claims> jws) {
         return User.builder().username(getClaim(jws, "username"))
                 .password("{redacted}")
-                .accountExpired(!Boolean.valueOf(getClaim(jws, "isAccountNonExpired")))
-                .accountLocked(!Boolean.valueOf(getClaim(jws, "isAccountNonLocked")))
-                .credentialsExpired(!Boolean.valueOf(getClaim(jws, "isCredentialsNonExpired")))
-                .disabled(!Boolean.valueOf(getClaim(jws, "isEnabled")))
+                .accountExpired(!Boolean.valueOf(getClaim(jws, "accountNonExpired")))
+                .accountLocked(!Boolean.valueOf(getClaim(jws, "accountNonLocked")))
+                .credentialsExpired(!Boolean.valueOf(getClaim(jws, "credentialsNonExpired")))
+                .disabled(!Boolean.valueOf(getClaim(jws, "enabled")))
                 .authorities(getAuthorityClaims(jws))
                 .build();
     }

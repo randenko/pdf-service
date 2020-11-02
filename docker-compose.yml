@@ -5,15 +5,17 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: com.paperstreetsoftware/pdf-service-0.0.1:latest
+    container_name: pdf-service
     restart: always
     ports:
-      - "5000:5000"
+      - 5000:5000 # webserver port
+      - 8000:8000 # remote debug port
     deploy:
       resources:
         limits:
           cpus: '1.00'
           memory: 512m
         reservations:
-          memory: 384m  
+          memory: 384m
     environment:
       SERVER_PORT: 5000
