@@ -17,6 +17,7 @@ import static org.apache.commons.lang3.StringUtils.removeStart;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -29,10 +30,10 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
-        final String param = ofNullable(request.getHeader(AUTHORIZATION))
-                .orElse(request.getParameter("t"));
+        final Optional<String> param = ofNullable(request.getHeader(AUTHORIZATION))
+                .or(() -> ofNullable(request.getParameter("t")));
 
-        final String token = ofNullable(param)
+        final String token = param
                 .map(value -> removeStart(value, BEARER))
                 .map(String::trim)
                 .orElse(StringUtils.EMPTY);
