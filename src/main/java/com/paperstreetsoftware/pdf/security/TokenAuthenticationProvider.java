@@ -46,9 +46,10 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = String.valueOf(authentication.getPrincipal());
         try {
-            Jws<Claims> jws = Jwts.parser()
+            Jws<Claims> jws = Jwts.parserBuilder()
                     .setSigningKey(publicKey)
                     .requireIssuer(securityProperties.getIssuer())
+                    .build()
                     .parseClaimsJws(token);
             LOGGER.info(String.format("Jwt token valid. Header=%s, Claims=%s", jws.getHeader(), jws.getBody()));
             UserDetails userDetails = buildPrincipal(jws);
