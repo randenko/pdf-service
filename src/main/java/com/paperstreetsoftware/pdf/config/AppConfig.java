@@ -67,11 +67,11 @@ public class AppConfig implements WebMvcConfigurer {
     @Scope(SCOPE_SINGLETON)
     public freemarker.template.Configuration freeMarkerConfiguration(ResourceLoader resourceLoader,
             PdfProperties pdfProperties, TemplateNumberFormatFactory templateNumberFormatFactory,
-            TemplateDateFormatFactory templateDateFormatFactory) {
+            TemplateDateFormatFactory templateDateFormatFactory) throws IOException {
         freemarker.template.Configuration configuration = new freemarker.template.Configuration(VERSION_2_3_28);
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.toString());
         configuration.setLocale(US);
-        configuration.setClassLoaderForTemplateLoading(resourceLoader.getClassLoader(), pdfProperties.getTemplatePath());
+        configuration.setDirectoryForTemplateLoading(pdfProperties.getResourcePath().getFile());
         configuration.setTemplateExceptionHandler(RETHROW_HANDLER);
         configuration.setCustomNumberFormats(customNumberFormats(templateNumberFormatFactory));
         configuration.setCustomDateFormats(customDateFormats(templateDateFormatFactory));

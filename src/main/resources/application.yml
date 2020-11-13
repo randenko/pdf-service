@@ -9,8 +9,7 @@ security:
     public-key: classpath:jwt_public_key.der
 
 pdf:
-  template-path: /templates
-  resource-path: ${pdf.template-path}/resources
+  resource-path: classpath:templates
 
 spring:
   application:

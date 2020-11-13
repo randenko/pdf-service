@@ -1,26 +1,18 @@
 package com.paperstreetsoftware.pdf.config.props;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
 
 @ConfigurationProperties("pdf")
 public class PdfProperties {
 
-    private String templatePath;
-    private String resourcePath;
+    private Resource resourcePath;
 
-    public String getTemplatePath() {
-        return templatePath;
-    }
-
-    public void setTemplatePath(String templatePath) {
-        this.templatePath = templatePath;
-    }
-
-    public String getResourcePath() {
+    public Resource getResourcePath() {
         return resourcePath;
     }
 
-    public void setResourcePath(String resourcePath) {
+    public void setResourcePath(Resource resourcePath) {
         this.resourcePath = resourcePath;
     }
 }

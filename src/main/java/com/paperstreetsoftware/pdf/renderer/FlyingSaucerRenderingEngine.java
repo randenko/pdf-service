@@ -5,8 +5,6 @@ import com.paperstreetsoftware.pdf.config.props.PdfProperties;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -15,20 +13,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.net.URL;
 
 @Component("flyingSaucerRenderingEngine")
 public class FlyingSaucerRenderingEngine implements RenderingEngine {
 
     private final ObjectFactory<ITextRenderer> rendererFactory;
-    private final ResourceLoader resourceLoader;
     private final PdfProperties pdfProperties;
 
     @Autowired
-    public FlyingSaucerRenderingEngine(ObjectFactory<ITextRenderer> rendererFactory, ResourceLoader resourceLoader,
-            PdfProperties pdfProperties) {
+    public FlyingSaucerRenderingEngine(ObjectFactory<ITextRenderer> rendererFactory, PdfProperties pdfProperties) {
         this.rendererFactory = rendererFactory;
-        this.resourceLoader = resourceLoader;
         this.pdfProperties = pdfProperties;
     }
 
@@ -44,7 +38,7 @@ public class FlyingSaucerRenderingEngine implements RenderingEngine {
 
     private ITextRenderer configureRenderer(Document doc) throws IOException {
         ITextRenderer renderer = rendererFactory.getObject();
-        renderer.setDocument(doc, getBaseURLForResources());
+        renderer.setDocument(doc, getBaseURL());
         renderer.layout();
         return renderer;
     }
@@ -61,19 +55,8 @@ public class FlyingSaucerRenderingEngine implements RenderingEngine {
         return in;
     }
 
-    private String getBaseURLForResources() throws IOException {
-        String basePath = null;
-        URL url = resourceLoader.getClassLoader().getResource(pdfProperties.getResourcePath());
-        if (url == null) {
-            Resource resource = resourceLoader.getResource(pdfProperties.getResourcePath());
-            if (resource.exists()) {
-                url = resource.getURL();
-            }
-        }
-        if (url != null) {
-            basePath = url.toString();
-        }
-        return basePath;
+    private String getBaseURL() throws IOException {
+        return pdfProperties.getResourcePath().getURL().toString();
     }
 
 }
