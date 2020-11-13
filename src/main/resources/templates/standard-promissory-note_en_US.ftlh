@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xml:lang="en">
+<html xml:lang="en" lang="en">
 <head>
     <title>Standard Promissory Note</title>
     <style type="text/css">
@@ -79,7 +79,7 @@
         ${model.lenderMailingCity}, ${model.lenderMailingState}, ${model.lenderMailingZip},
             referred to as the "Lender", the sum of ${model.loanAmount?string.currency} US Dollars, referred to as the
             "Borrowed Money", with interest
-            accruing on the unpaid balance at a rate of ${model.interestRate} percent (%) per annum, referred to as the
+            accruing on the unpaid balance at a rate of ${model.interestRate} percent (%) <i>per annum</i>, referred to as the
             "Interest
             Rate", beginning on ${model.borrowDate?datetime("yyyy-MM-dd")?date?no_esc} under the following terms and
             conditions:

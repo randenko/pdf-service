@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xml:lang="en">
+<html xml:lang="en" lang="en">
 <head>
     <title>1099 Tax Form</title>
     <style type="text/css">
