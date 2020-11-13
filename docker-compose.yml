@@ -14,8 +14,8 @@ services:
       resources:
         limits:
           cpus: '1.00'
-          memory: 512m
+          memory: 768m
         reservations:
-          memory: 384m
+          memory: 512m
     environment:
       SERVER_PORT: 5000
