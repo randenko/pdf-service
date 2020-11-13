@@ -62,10 +62,10 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
     private UserDetails buildPrincipal(Jws<Claims> jws) {
         return User.builder().username(getClaim(jws, "username"))
                 .password("{redacted}")
-                .accountExpired(!Boolean.valueOf(getClaim(jws, "accountNonExpired")))
-                .accountLocked(!Boolean.valueOf(getClaim(jws, "accountNonLocked")))
-                .credentialsExpired(!Boolean.valueOf(getClaim(jws, "credentialsNonExpired")))
-                .disabled(!Boolean.valueOf(getClaim(jws, "enabled")))
+                .accountExpired(!Boolean.parseBoolean(getClaim(jws, "accountNonExpired")))
+                .accountLocked(!Boolean.parseBoolean(getClaim(jws, "accountNonLocked")))
+                .credentialsExpired(!Boolean.parseBoolean(getClaim(jws, "credentialsNonExpired")))
+                .disabled(!Boolean.parseBoolean(getClaim(jws, "enabled")))
                 .authorities(getAuthorityClaims(jws))
                 .build();
     }
