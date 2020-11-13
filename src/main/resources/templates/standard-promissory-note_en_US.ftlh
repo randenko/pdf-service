@@ -1,8 +1,6 @@
-<!--?xml version="1.0" encoding="UTF-8"?-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<?xml version="1.0" encoding="UTF-8"?>
+<html xml:lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Standard Promissory Note</title>
     <style type="text/css">
         body {
@@ -45,7 +43,7 @@
         }
 
         @page {
-            size: 8.5in 11in portrait;
+            size: letter portrait;
             margin: 75px 60px 100px 62px;
             @bottom-right {
                 content: "Page " counter(page) " of " counter(pages);
@@ -61,7 +59,7 @@
 <ol>
     <li>
         <span>The Parties.</span>
-        On ${model.borrowDate?datetime("yyyy-MM-dd")?date?no_esc}, 1 individual known as ${model.borrowerFirstName}&nbsp;${model.borrowerLastName}
+        On ${model.borrowDate?datetime("yyyy-MM-dd")?date?no_esc}, 1 individual known as ${model.borrowerFirstName} ${model.borrowerLastName}
     <#if model.borrowerMailingAddressLine1??>
         of ${model.borrowerMailingAddressLine1},
         <#if model.borrowerMailingAddressLine2??>
@@ -71,9 +69,8 @@
     </#if>
         referred to as the "Borrower",
         <p class="uppercase">Received and Promises to Pay</p>
-
         <p>
-            1 individual known as ${model.lenderFirstName}&nbsp;${model.lenderLastName}
+            1 individual known as ${model.lenderFirstName} ${model.lenderLastName}
         <#if model.lenderMailingAddressLine1??>
             of ${model.lenderMailingAddressLine1},
             <#if model.lenderMailingAddressLine2??>
@@ -205,7 +202,7 @@
 <#if model.cosignerFirstName?? && model.cosignerLastName??>
     <li>
         <span>Guarantors:</span>
-    ${model.cosignerFirstName}&nbsp;${model.cosignerLastName}, referred to as the "Guarantor", agrees to the
+    ${model.cosignerFirstName} ${model.cosignerLastName}, referred to as the "Guarantor", agrees to the
         liabilities and obligations on behalf of the Borrower under the terms of this Note. If the Borrower does
         not make payment, the Guarantors shall be personally responsible and is guaranteeing the payment of the
         principle, late fees, and all accrued interest under the terms of this Note.

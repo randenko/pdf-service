@@ -16,7 +16,6 @@ import freemarker.core.TemplateNumberFormatFactory;
 import org.apache.commons.io.IOUtils;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.*;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -65,9 +64,9 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Bean
     @Scope(SCOPE_SINGLETON)
-    public freemarker.template.Configuration freeMarkerConfiguration(ResourceLoader resourceLoader,
-            PdfProperties pdfProperties, TemplateNumberFormatFactory templateNumberFormatFactory,
-            TemplateDateFormatFactory templateDateFormatFactory) throws IOException {
+    public freemarker.template.Configuration freeMarkerConfiguration(PdfProperties pdfProperties,
+            TemplateNumberFormatFactory templateNumberFormatFactory, TemplateDateFormatFactory templateDateFormatFactory)
+            throws IOException {
         freemarker.template.Configuration configuration = new freemarker.template.Configuration(VERSION_2_3_28);
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.toString());
         configuration.setLocale(US);

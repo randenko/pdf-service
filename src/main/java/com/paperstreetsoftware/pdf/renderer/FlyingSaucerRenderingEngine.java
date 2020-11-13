@@ -27,18 +27,18 @@ public class FlyingSaucerRenderingEngine implements RenderingEngine {
     }
 
     @Override
-    public InputStream renderPDF(Document doc) {
+    public InputStream renderPDF(Document document) {
         try {
-            ITextRenderer renderer = configureRenderer(doc);
+            ITextRenderer renderer = configureRenderer(document);
             return pipeToInputStream(renderer);
         } catch (IOException e) {
             throw new RuntimeException("An error occurred while rendering the pdf file.", e);
         }
     }
 
-    private ITextRenderer configureRenderer(Document doc) throws IOException {
+    private ITextRenderer configureRenderer(Document document) throws IOException {
         ITextRenderer renderer = rendererFactory.getObject();
-        renderer.setDocument(doc, getBaseURL());
+        renderer.setDocument(document, getBaseURL());
         renderer.layout();
         return renderer;
     }

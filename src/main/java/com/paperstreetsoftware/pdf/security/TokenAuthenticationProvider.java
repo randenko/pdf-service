@@ -51,11 +51,11 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
                     .requireIssuer(securityProperties.getIssuer())
                     .build()
                     .parseClaimsJws(token);
-            LOGGER.info(String.format("Jwt token valid. Header=%s, Claims=%s", jws.getHeader(), jws.getBody()));
+            LOGGER.info(String.format("Auth token valid. Header=%s, Claims=%s", jws.getHeader(), jws.getBody()));
             UserDetails userDetails = buildPrincipal(jws);
             return new PreAuthenticatedAuthenticationToken(userDetails, "{redacted}", userDetails.getAuthorities());
         } catch (Throwable t) {
-            throw new TokenAuthenticationException("An error occurred while validating the jtw token.", t);
+            throw new TokenAuthenticationException("An error occurred while validating the auth token.", t);
         }
     }
 
