@@ -56,7 +56,7 @@ public class FlyingSaucerRenderingEngine implements RenderingEngine {
     }
 
     private String getBaseURL() throws IOException {
-        return pdfProperties.getResourcePath().getURL().toString();
+        return pdfProperties.getResourcePath().getURL().toString() + "/";
     }
 
 }
