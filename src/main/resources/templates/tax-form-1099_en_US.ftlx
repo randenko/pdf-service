@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xml:lang="en" lang="en">
+<?xml-stylesheet type="text/css" href="css/general.css" title="Style" media="all"?>
+
+<html>
 <head>
     <title>1099 Tax Form</title>
-    <link rel="stylesheet" type="text/css" href="css/general.css" title="Style" media="all" />
 </head>
 <body>
-    <h1>TODO</h1>
+    <h1 class="title">TODO</h1>
 </body>
 </html>
