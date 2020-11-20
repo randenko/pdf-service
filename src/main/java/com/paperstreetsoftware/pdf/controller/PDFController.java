@@ -6,6 +6,7 @@ import com.paperstreetsoftware.pdf.model.PDFType;
 import com.paperstreetsoftware.pdf.service.PDFGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,8 @@ public class PDFController {
     private final Validator validator;
 
     @Autowired
-    public PDFController(ObjectMapper objectMapper, PDFGenerator pdfGenerator, Validator validator) {
+    public PDFController(ObjectMapper objectMapper, @Qualifier("openHtmlPDFGenerator") PDFGenerator pdfGenerator,
+                         Validator validator) {
         this.objectMapper = objectMapper;
         this.pdfGenerator = pdfGenerator;
         this.validator = validator;
