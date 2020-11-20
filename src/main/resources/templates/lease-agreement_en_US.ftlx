@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="css/tailwind.min.css" title="Style" media="all"?>
 <?xml-stylesheet type="text/css" href="css/general.css" title="Style" media="all"?>
 
 <html>
@@ -6,9 +7,9 @@
     <title>Agreement of Lease</title>
 </head>
 <body>
-    <h4 class="title underline">Agreement of Lease</h4>
+    <h4 class="text-center uppercase underline mb-4 mt-2">Agreement of Lease</h4>
     <p>
-        THIS <span class="bold">LEASE</span> ("Lease"), made and entered into this day of
+        THIS <span class="font-bold">LEASE</span> ("Lease"), made and entered into this day of
     </p>
 </body>
 </html>
